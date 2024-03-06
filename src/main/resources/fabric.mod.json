@@ -19,8 +19,7 @@
     "addon.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "fabric": "*",
-    "minecraft": "1.20.1"
+    "fabricloader": ">=0.15",
+    "minecraft": "1.20.4"
   }
 }

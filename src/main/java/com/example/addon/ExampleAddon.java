@@ -1,7 +1,5 @@
 package com.example.addon;
 
-import com.example.addon.impl.ExampleAddonDispatcher;
-import com.example.addon.impl.ExampleAddonModule;
 import com.example.addon.modules.ExampleModule;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -11,6 +9,7 @@ import dev.boze.api.addon.Addon;
 import dev.boze.api.addon.AddonMetadata;
 import dev.boze.api.addon.AddonVersion;
 import dev.boze.api.addon.command.AddonDispatcher;
+import dev.boze.api.addon.command.DefaultDispatcher;
 import dev.boze.api.addon.module.AddonModule;
 import dev.boze.api.config.Serializable;
 import dev.boze.api.exception.AddonInitializationException;
@@ -34,7 +33,7 @@ public class ExampleAddon implements ModInitializer, Addon, Serializable<Example
 
     private final ArrayList<AddonModule> modules = new ArrayList<>();
 
-    private ExampleAddonDispatcher dispatcher;
+    private DefaultDispatcher dispatcher;
 
     @Override
     public void onInitialize() {
@@ -59,7 +58,7 @@ public class ExampleAddon implements ModInitializer, Addon, Serializable<Example
         modules.add(new ExampleModule());
 
         // Initialize commands
-        dispatcher = new ExampleAddonDispatcher();
+        dispatcher = new DefaultDispatcher("ex");
 
         LiteralArgumentBuilder<CommandSource> builder = LiteralArgumentBuilder.literal("testcommand");
         builder.executes(context -> {
@@ -94,7 +93,9 @@ public class ExampleAddon implements ModInitializer, Addon, Serializable<Example
     public JsonObject toJson() {
         JsonObject object = new JsonObject();
         for (AddonModule module : modules) {
-            object.add(module.getInfo().getName(), ((ExampleAddonModule) module).toJson());
+            if (module instanceof Serializable<?> serializable) {
+                object.add(module.getInfo().getName(), serializable.toJson());
+            }
         }
         return object;
     }
@@ -102,8 +103,8 @@ public class ExampleAddon implements ModInitializer, Addon, Serializable<Example
     @Override
     public ExampleAddon fromJson(JsonObject jsonObject) {
         for (AddonModule module : modules) {
-            if (jsonObject.has(module.getInfo().getName())) {
-                ((ExampleAddonModule) module).fromJson(jsonObject.getAsJsonObject(module.getInfo().getName()));
+            if (jsonObject.has(module.getInfo().getName()) && module instanceof Serializable<?> serializable) {
+                serializable.fromJson(jsonObject.getAsJsonObject(module.getInfo().getName()));
             }
         }
         return this;

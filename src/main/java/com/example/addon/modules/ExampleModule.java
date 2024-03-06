@@ -1,17 +1,17 @@
 package com.example.addon.modules;
 
-import com.example.addon.impl.ExampleAddonModule;
-import com.example.addon.impl.ExampleAddonToggle;
 import dev.boze.api.Globals;
+import dev.boze.api.addon.module.ToggleableModule;
 import dev.boze.api.event.EventPlayerUpdate;
+import dev.boze.api.setting.SettingToggle;
 import meteordevelopment.orbit.EventHandler;
 
-public class ExampleModule extends ExampleAddonModule {
+public class ExampleModule extends ToggleableModule {
 
-    private final ExampleAddonToggle toggle = new ExampleAddonToggle("ExampleToggle", "An example toggle", true);
+    private final SettingToggle toggle = new SettingToggle("ExampleToggle", "An example toggle", true);
 
     public ExampleModule() {
-        super("ExampleModule", "ExampleModule", "Example module");
+        super("ExampleModule", "An example addon module");
         elements.add(toggle);
     }
 
