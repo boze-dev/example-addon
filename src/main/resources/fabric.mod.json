@@ -10,11 +10,6 @@
   },
   "license": "GPL-3.0",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "com.example.addon.ExampleAddon"
-    ]
-  },
   "mixins": [
     "addon.mixins.json"
   ],
