@@ -1,21 +1,17 @@
 package com.example.addon;
 
-import com.google.gson.JsonObject;
+import com.example.addon.commands.PrintModuleCommand;
+import com.example.addon.commands.PrintOptionsCommand;
+import com.example.addon.modules.*;
+import dev.boze.api.BozeInstance;
 import dev.boze.api.addon.Addon;
-import dev.boze.api.addon.module.ToggleableModule;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ExampleAddon extends Addon {
 
-    public static final String ID = "example_addon";
-    public static final String NAME = "Example Addon";
-    public static final String DESCRIPTION = "An example addon for Boze";
+    public static final String ID = "example-addon";
+    public static final String NAME = "ExampleAddon";
+    public static final String DESCRIPTION = "Example addon for boze.dev utility mod";
     public static final String VERSION = "1.0.0";
-
-    public static final ExampleAddon INSTANCE = new ExampleAddon();
-
-    public static final Logger LOG = LogManager.getLogger();
 
     public ExampleAddon() {
         super(ID, NAME, DESCRIPTION, VERSION);
@@ -23,42 +19,21 @@ public class ExampleAddon extends Addon {
 
     @Override
     public boolean initialize() {
-        LOG.info("Initializing " + name);
+        // Register commands - demonstrate command API
+        dispatcher.registerCommand(PrintModuleCommand.INSTANCE);
+        dispatcher.registerCommand(PrintOptionsCommand.INSTANCE);
 
-        LOG.info("Successfully initialized " + name);
+        // Register modules - demonstrate different API features
+        modules.add(ExampleSurround.INSTANCE);
+        modules.add(ExampleWorldRender.INSTANCE);
+        modules.add(ExampleBlockHighlight.INSTANCE);
 
-        return super.initialize();
-    }
+        // Register client module extensions - demonstrate extension API
+        extensions.add(new ExampleExtension());
 
-    @Override
-    public JsonObject toJson() {
-        JsonObject object = new JsonObject();
+        // Register package for event handler
+        BozeInstance.INSTANCE.registerPackage("com.example.addon");
 
-        JsonObject modulesObject = new JsonObject();
-
-        for (ToggleableModule module : modules) {
-            modulesObject.add(module.getName(), module.toJson());
-        }
-
-        object.add("modules", modulesObject);
-
-        return object;
-    }
-
-    @Override
-    public Addon fromJson(JsonObject jsonObject) {
-        if (!jsonObject.has("modules")) {
-            return this;
-        }
-
-        JsonObject modulesObject = jsonObject.getAsJsonObject("modules");
-
-        for (ToggleableModule module : modules) {
-            if (modulesObject.has(module.getName())) {
-                module.fromJson(modulesObject.getAsJsonObject(module.getName()));
-            }
-        }
-
-        return this;
+        return true;
     }
 }

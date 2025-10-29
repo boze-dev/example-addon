@@ -11,14 +11,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
-public class MixinMinecraftClient {
-
-    @Inject(method = "<init>", at = @At("TAIL"))
-    public void onInit(RunArgs args, CallbackInfo ci) {
+public class MixinMinecraft {
+    @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;instance:Lnet/minecraft/client/MinecraftClient;"))
+    private void onInit(RunArgs args, CallbackInfo ci) {
         try {
-            BozeInstance.INSTANCE.registerAddon(ExampleAddon.INSTANCE);
-        } catch (AddonInitializationException e) {
-            ExampleAddon.LOG.fatal("Failed to initialize " + ExampleAddon.INSTANCE.id, e);
+            BozeInstance.INSTANCE.registerAddon(new ExampleAddon());
+        } catch (AddonInitializationException exception) {
+            throw new RuntimeException("Failed to initialize example-addon");
         }
     }
 }
