@@ -33,7 +33,7 @@ public class ExampleWorldRender extends AddonModule {
 
     // Animation settings
     public final ToggleOption animate = new ToggleOption(this, "Animate", "Enable size animation", false);
-    public final SliderOption animationSpeed = new SliderOption(this, "AnimationSpeed", "Animation speed multiplier", 1.0, 0.1, 5.0, 0.1, animate);
+    public final SliderOption animationSpeed = new SliderOption(this, "AnimationSpeed", "Animation speed multiplier", 1.0, 0.1, 5.0, 0.1, animate::getValue);
 
     private ExampleWorldRender() {
         super("WorldRenderExample", "Showcase 3D world rendering with WorldDrawer API");

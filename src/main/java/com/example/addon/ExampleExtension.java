@@ -3,8 +3,10 @@ package com.example.addon;
 import dev.boze.api.client.module.ClientModuleExtension;
 import dev.boze.api.client.ModuleManager;
 import dev.boze.api.event.EventPlayerUpdate;
+import dev.boze.api.option.ColorOption;
 import dev.boze.api.option.Option;
 import dev.boze.api.option.PageOption;
+import dev.boze.api.render.ColorMaker;
 import dev.boze.api.option.SliderOption;
 import dev.boze.api.option.ToggleOption;
 import meteordevelopment.orbit.EventHandler;
@@ -17,6 +19,7 @@ public class ExampleExtension extends ClientModuleExtension {
 
     // Set in constructor
     public ToggleOption winRenderEnabled;
+    public ColorOption winRenderColor;
 
     // Added to root options list
     public final ToggleOption autoWin = new ToggleOption(parent, "AutoWin", "Automatically win the game (imaginary feature)");
@@ -39,6 +42,7 @@ public class ExampleExtension extends ClientModuleExtension {
         // Create win render subsettings under the existing render page
         if (renderPage != null) {
             winRenderEnabled = new ToggleOption(parent, "WinRender", "Enable win rendering", true, renderPage);
+            winRenderColor = new ColorOption(parent, "WinRenderColor", "Color for win rendering", ColorMaker.staticColor(0, 255, 0), 0.1f, 1.0f, winRenderEnabled::getValue, renderPage);
         }
     }
 

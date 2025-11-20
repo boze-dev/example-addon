@@ -12,6 +12,6 @@
     "requireAnnotations": true
   },
   "client": [
-    "MixinMinecraft"
+    "MixinMinecraftClient"
   ]
 }
