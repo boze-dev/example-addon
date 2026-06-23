@@ -12,12 +12,12 @@ import dev.boze.api.utility.interaction.PlaceHelper;
 import dev.boze.api.utility.interaction.SwapType;
 import dev.boze.api.option.*;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
 
 /**
@@ -48,11 +48,11 @@ public class ExampleSurround extends AddonModule {
         if (obsidianSlot == -1) return; // No obsidian in hotbar, don't try to place
 
         // Get player position as center
-        BlockPos center = MinecraftClient.getInstance().player.getBlockPos();
+        BlockPos center = Minecraft.getInstance().player.blockPosition();
 
         // Try to place blocks in all 4 directions
         for (Direction dir : directions) {
-            BlockPos targetPos = center.offset(dir);
+            BlockPos targetPos = center.relative(dir);
 
             if (!PlaceHelper.isEmpty(targetPos)) continue;
 
@@ -61,7 +61,7 @@ public class ExampleSurround extends AddonModule {
             if (hitResult != null) {
                 Runnable place = () -> {
                     InvHelper.swapToSlot(obsidianSlot, SwapType.Silent);
-                    PlaceHelper.place(InteractionMode.NCP, hitResult, Hand.MAIN_HAND);
+                    PlaceHelper.place(InteractionMode.NCP, hitResult, InteractionHand.MAIN_HAND);
                     InvHelper.swapBack();
 
                     // Add placement visualization if render is enabled
@@ -82,7 +82,7 @@ public class ExampleSurround extends AddonModule {
                     }
                 };
 
-                float[] rotation = MathHelper.calculateRotation(hitResult.getPos(), rotate.getValue());
+                float[] rotation = MathHelper.calculateRotation(hitResult.getLocation(), rotate.getValue());
                 event.addInteraction(new Interaction(place, rotate.getValue(), rotation[0], rotation[1]));
             }
         }

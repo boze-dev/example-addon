@@ -11,7 +11,7 @@ import dev.boze.api.option.Option;
 import dev.boze.api.option.ParentOption;
 import dev.boze.api.option.SliderOption;
 import dev.boze.api.option.ToggleOption;
-import net.minecraft.command.CommandSource;
+import net.minecraft.commands.SharedSuggestionProvider;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PrintOptionsCommand extends AddonCommand {
     }
 
     @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
+    public void build(LiteralArgumentBuilder<SharedSuggestionProvider> builder) {
         builder.then(argument("module", BaseModule.BaseModuleArgument.module())
                 .executes(context -> {
                     BaseModule module = BaseModule.BaseModuleArgument.getModule(context, "module");

@@ -7,9 +7,9 @@ import dev.boze.api.render.Billboard;
 import dev.boze.api.render.ColorMaker;
 import dev.boze.api.render.HudDrawer;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Example module showcasing flat 2D block highlighting using Billboard and HudDrawer
@@ -26,9 +26,9 @@ public class ExampleBlockHighlight extends AddonModule {
 
     @EventHandler
     public void onHudRender(EventHudRender event) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        if (mc.crosshairTarget instanceof BlockHitResult result && result.getBlockPos() != null) {
-            Vec3d center = new Vec3d(
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.hitResult instanceof BlockHitResult result && result.getBlockPos() != null) {
+            Vec3 center = new Vec3(
                 result.getBlockPos().getX() + 0.5,
                 result.getBlockPos().getY() + 0.5,
                 result.getBlockPos().getZ() + 0.5

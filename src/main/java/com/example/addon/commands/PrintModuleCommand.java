@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.boze.api.addon.AddonCommand;
 import dev.boze.api.utility.ChatHelper;
 import dev.boze.api.client.module.BaseModule;
-import net.minecraft.command.CommandSource;
+import net.minecraft.commands.SharedSuggestionProvider;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -16,7 +16,7 @@ public class PrintModuleCommand extends AddonCommand {
     }
 
     @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
+    public void build(LiteralArgumentBuilder<SharedSuggestionProvider> builder) {
         builder.then(argument("module", BaseModule.BaseModuleArgument.module())
                 .executes(context -> {
                     BaseModule module = BaseModule.BaseModuleArgument.getModule(context, "module");

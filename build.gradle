@@ -1,7 +1,7 @@
 import net.fabricmc.loom.task.prod.ClientProductionRunTask
 
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom'
 }
 
 version = project.mod_version
@@ -18,15 +18,18 @@ repositories {
     }
 }
 
+configurations {
+    bozeLoader
+}
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Boze Dependencies
-    modCompileOnly "dev.boze:boze-api:${project.boze_api_version}+${project.minecraft_version}"
-    modRuntimeOnly "dev.boze:boze-loader-beta:${project.boze_loader_version}"
+    compileOnly "dev.boze:boze-api:${project.boze_api_version}+${project.minecraft_version}"
+    bozeLoader "dev.boze:boze-loader-beta:${project.boze_loader_version}"
     implementation "meteordevelopment:orbit:${project.orbit_version}"
 }
 
@@ -44,12 +47,16 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
@@ -61,5 +68,5 @@ jar {
 }
 
 tasks.register("runBoze", ClientProductionRunTask) {
-    mods.from configurations.modRuntimeOnly
+    mods.from configurations.bozeLoader
 }

@@ -6,11 +6,11 @@ import dev.boze.api.event.EventWorldRender;
 import dev.boze.api.option.*;
 import dev.boze.api.render.*;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
 
 /**
  * Example module showcasing 3D world rendering capabilities
@@ -46,8 +46,8 @@ public class ExampleWorldRender extends AddonModule {
 
     @EventHandler
     public void onWorldRender(EventWorldRender event) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        if (mc.crosshairTarget instanceof BlockHitResult result && result.getBlockPos() != null) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.hitResult instanceof BlockHitResult result && result.getBlockPos() != null) {
             BlockPos pos = result.getBlockPos();
 
             // Calculate animated size if enabled
@@ -56,11 +56,11 @@ public class ExampleWorldRender extends AddonModule {
                 long time = System.currentTimeMillis();
                 double animation = Math.sin(time * 0.001 * animationSpeed.getValue()) * 0.2;
                 currentSize += animation;
-                currentSize = MathHelper.clamp(currentSize, 0.1, 3.0);
+                currentSize = Mth.clamp(currentSize, 0.1, 3.0);
             }
 
             // Create box around the target block
-            Box box = new Box(pos).expand(currentSize - 1.0);
+            AABB box = new AABB(pos).inflate(currentSize - 1.0);
 
             WorldDrawer.start();
 
