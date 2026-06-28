@@ -1,5 +1,6 @@
 package com.example.addon.commands;
 
+import com.example.addon.ExampleAddon;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.boze.api.addon.AddonCommand;
 import dev.boze.api.utility.ChatHelper;
@@ -20,7 +21,7 @@ public class PrintModuleCommand extends AddonCommand {
         builder.then(argument("module", BaseModule.BaseModuleArgument.module())
                 .executes(context -> {
                     BaseModule module = BaseModule.BaseModuleArgument.getModule(context, "module");
-                    ChatHelper.sendMsg("printmodule", String.format(
+                    ChatHelper.sendMsg(ExampleAddon.BRAND, ExampleAddon.BRAND_COLOR, "printmodule", String.format(
                             """
                                     Module Info:
                                       Name: %s

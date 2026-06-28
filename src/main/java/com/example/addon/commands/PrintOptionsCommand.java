@@ -1,5 +1,6 @@
 package com.example.addon.commands;
 
+import com.example.addon.ExampleAddon;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.boze.api.addon.AddonCommand;
 import dev.boze.api.utility.ChatHelper;
@@ -33,7 +34,7 @@ public class PrintOptionsCommand extends AddonCommand {
                     List<Option<?>> options = module.getOptions();
 
                     if (options.isEmpty()) {
-                        ChatHelper.sendMsg("printoptions", module.getTitle() + " has no options.");
+                        ChatHelper.sendMsg(ExampleAddon.BRAND, ExampleAddon.BRAND_COLOR, "printoptions", module.getTitle() + " has no options.");
                         return SINGLE_SUCCESS;
                     }
 
@@ -70,7 +71,7 @@ public class PrintOptionsCommand extends AddonCommand {
                         }
                     }
 
-                    ChatHelper.sendMsg("printoptions", message.toString());
+                    ChatHelper.sendMsg(ExampleAddon.BRAND, ExampleAddon.BRAND_COLOR, "printoptions", message.toString());
                     return SINGLE_SUCCESS;
                 }));
     }
