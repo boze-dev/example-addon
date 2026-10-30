@@ -2,9 +2,11 @@ package com.example.addon;
 
 import com.example.addon.commands.PrintModuleCommand;
 import com.example.addon.commands.PrintOptionsCommand;
+import com.example.addon.gui.CsTheme;
 import com.example.addon.modules.*;
 import dev.boze.api.BozeInstance;
 import dev.boze.api.addon.Addon;
+import dev.boze.api.gui.GuiThemes;
 import dev.boze.api.render.ClientColor;
 import dev.boze.api.render.ColorMaker;
 
@@ -41,6 +43,10 @@ public class ExampleAddon extends Addon {
         modules.add(ExampleInfoHud.INSTANCE);
         modules.add(ExampleHat.INSTANCE);
         modules.add(ExampleRange.INSTANCE);
+        modules.add(ExampleNewChunks.INSTANCE);
+
+        // Register a GUI theme - pick it with the Gui module's Theme setting
+        GuiThemes.register(new CsTheme());
 
         // Register client module extensions - demonstrate extension API
         extensions.add(new ExampleExtension());
